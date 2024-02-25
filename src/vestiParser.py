@@ -22,7 +22,7 @@ class VestiParser:
 
     def start(self):
          self.mainInfoParse()
-         self.contentInfoParse
+         self.contentInfoParse()
          schedule.every(60).minutes.do(self.mainInfoParse)
          schedule.every(40).minutes.do(self.contentInfoParse)
          while True:
