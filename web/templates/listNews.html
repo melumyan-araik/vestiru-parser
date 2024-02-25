@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    {% for n in listNews %}
+        <div class="card mb-2">
+            <div class="card-body">
+            <h5 class="card-title">{{ n.title }}</h5>
+            <small class="card-subtitle mb-2 text-muted">{{ n.datePub }}</small>
+            <p class="card-text">{{ n.anons }}</p>
+            <a href=/news/{{ n.id }} class="card-link">Читать ...</a>
+            </div>
+        </div>
+  {% endfor %}
+{% endblock %}

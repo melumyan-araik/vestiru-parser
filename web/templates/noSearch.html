@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <blockquote class="blockquote mb-0 text-muted text-center">
+          <p>По запросу "{{ query }}" за период с "{{ df.strftime('%d.%m.%Y')  }}" по "{{ dt.strftime('%d.%m.%Y') }}" ничего не найдено</p>
+        </blockquote>
+    </div>
+    <div class="card-footer text-muted text-center">
+    <a href="/" class="card-link">На главную</a>
+    </div>
+</div>
+{% endblock %}

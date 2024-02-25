@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header text-center">
+         <h3>{{ news.title }}</h3>
+      </div>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0 text-muted text-center">
+        <p>{{ news.anons }}</p>
+      </blockquote>
+      <br/>
+      <p class="card-text">
+         {{ news.text }}
+      </p>
+      <p class="card-text"><small class="text-muted">{{ news.datePub }} </small></p>
+    </div>
+    <div class="card-footer text-muted text-center">
+        {% for t in listTags %}    
+        <a href=/tag/{{t.id}} >{{t.name}}</a>
+        {% endfor %}
+      </div>
+  </div>
+{% endblock %}
