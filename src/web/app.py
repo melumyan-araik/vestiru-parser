@@ -1,15 +1,19 @@
+import os
+import sys
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from services import Services
 from datetime import datetime
 
+import uvicorn
+from services import Services
+
 app = FastAPI()
- 
-templates = Jinja2Templates(directory="templates")
+
+templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @app.get("/")
-def root(request: Request):
+async def root(request: Request):
     listNews = Services.getNews()
     return templates.TemplateResponse("listNews.html", {"request": request, "listNews": listNews})
 
@@ -25,26 +29,26 @@ def newsByTag(request: Request, id: int):
     return templates.TemplateResponse("listNews.html", {"request": request, "listNews": listNews})
 
 @app.post("/news/search")
-def search(request: Request,
+async def search(request: Request,
     query: str | None  = Form(default=None),
     dateFrom : datetime | None = Form(default=None),
     dateTo: datetime | None = Form(default=None)):
-   
-   if query is None and dateFrom is None and dateTo is None:
-       return RedirectResponse("/", status_code=303)
-   
-   listNews = []
-   if query is not None:
-      query = query.strip()
-   if query is None:
-      query = '  '
-   if dateFrom is None:
-      dateFrom = datetime.strptime("01.01.2000 00:00", '%d.%m.%Y %H:%M')
-   if dateTo is None:
-      dateTo = datetime.now()
-      
-   listNews = Services.search(query, dateFrom, dateTo)
-   if len(listNews) == 0:
-    return templates.TemplateResponse("noSearch.html", {"request": request, "query": query, "df": dateFrom, "dt": dateTo})
+
+    if query is None and dateFrom is None and dateTo is None:
+        return RedirectResponse("/", status_code=303)
     
-   return templates.TemplateResponse("listNews.html", {"request": request, "listNews": listNews})
+    listNews = []
+    if query is not None:
+        query = query.strip()
+    if query is None:
+        query = ' '
+    if dateFrom is None:
+        dateFrom = datetime.strptime("01.01.2000 00:00", '%d.%m.%Y %H:%M')
+    if dateTo is None:
+        dateTo = datetime.now()
+        
+    listNews = Services.search(query, dateFrom, dateTo)
+    if len(listNews) == 0:
+        return templates.TemplateResponse("noSearch.html", {"request": request, "query": query, "df": dateFrom, "dt": dateTo})
+        
+    return templates.TemplateResponse("listNews.html", {"request": request, "listNews": listNews})
