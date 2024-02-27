@@ -1,52 +1,28 @@
 version: '3.9'
 
 services:
-  server:
-    container_name: webservice
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-      - paresr
-    ports:
-      - 8001:8000
-    command: bash -c 'while !</dev/tcp/postgres/5432; do sleep 1; done; uvicorn web.app:app --host 0.0.0.0 --port 8000'
-    volumes:
-      - ./:/src
-    env_file:
-      - ./.env
-    restart: always
-    networks:
-      - backend
   paresr:
       container_name: parser
       build:
         context: .
         dockerfile: Dockerfile
+      env_file:
+        - ./.env
       depends_on:
        - db
-      command: python main.py
       restart: always
-      networks:
-        - backend
+      ports: 
+        - "8001:8000"
   db:
-    image: "postgres:12.18"
+    image: "postgres:15.2"
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     restart: always
     ports:
-      - 5431:${DB_PORT}
+      - "5431:5432"
     volumes:
       - ./postgresql:/var/lib/postgresql
       - ./postgresql/data:/var/lib/postgresql/data
-    networks:
-      - backend
-
-networks:
-  backend:
-    driver: bridge
-
     

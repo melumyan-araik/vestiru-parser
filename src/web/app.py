@@ -2,6 +2,7 @@ import os
 import sys
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from datetime import datetime
 
@@ -10,6 +11,7 @@ from services import Services
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name='static')
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @app.get("/")

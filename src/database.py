@@ -17,8 +17,10 @@ def createDB():
 def getConnectionStr():
     return f"{os.getenv("AL_DIALECT")}+{os.getenv("AL_DRIVER")}://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}"
 
+url = getConnectionStr()
+print(url)
 sync_engine = create_engine(
-    url=getConnectionStr(),
+    url=url,
     echo=True,
 )
 session_factory = sessionmaker(sync_engine)
